@@ -10,7 +10,6 @@
 
 
 File logFile;
-String file_name;
 
 char buff[50];
 
@@ -18,8 +17,8 @@ CAN_message_t inMsgR, inMsgL;
 Motor motorL, motorR;
 
 void setup() {
-  motorL.voltage = kelly_getVoltage(inMsgR);
-  delay(4000);
+
+  delay(3000);
   Serial.begin(115200);
   Serial.println(F("Begin."));
   // put your setup code here, to run once:
@@ -30,18 +29,9 @@ void setup() {
     Serial.println(F("SD Card initialization done."));
   }
 
-  file_name=generateFilename();
-  strcat(buff,file_name.c_str());
-  Serial.print("access file: ");
-  Serial.println(buff);
-  logFile = SD.open(buff, FILE_WRITE);  // 8.3 file format name eg: 12345678.txt. Directories do not count towards name length.
+  createLogFile(logFile);
 
-  if(logFile)
-  {
-    Serial.println("success");
-    logFile.println("hello world");
-    logFile.close();
-  }
+
 
 }
 
@@ -50,24 +40,6 @@ void loop() {
 
 }
 
-
-// String SD_new_file_str(void)
-// {
-//   String new_file="";
-//   // new_file+= year();
-//   // new_file+= "-";
-//   // new_file+= month();
-//   // new_file+= "-";
-//   // new_file+= day();
-//   // new_file+= "/";
-//   new_file+=hour();
-//   new_file+="_";
-//   new_file+=minute();
-//   new_file+="_";
-//   new_file+=second();
-//   new_file+=".txt";
-//   return new_file;
-// }
 
 void RTC_INIT(void)
 {
