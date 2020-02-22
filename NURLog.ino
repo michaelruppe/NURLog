@@ -1,5 +1,7 @@
 #include <SD.h>
 #include <TimeLib.h>          //RTC
+#include <FlexCAN.h>          //CAN
+#include <kinetis_flexcan.h>  //Additional CAN library to allow for extended ID's for filtering
 
 
 #include "logger.h"
@@ -12,7 +14,11 @@ String file_name;
 
 char buff[50];
 
+CAN_message_t inMsgR, inMsgL;
+Motor motorL, motorR;
+
 void setup() {
+  motorL.voltage = kelly_getVoltage(inMsgR);
   delay(4000);
   Serial.begin(115200);
   Serial.println(F("Begin."));

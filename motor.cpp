@@ -6,12 +6,3 @@
 
 #include "Arduino.h"
 #include "motor.h"
-
-Motor::Motor()
-{
-  rpm = 0;
-  current = 0;
-  voltage = 0;
-
-  // TODO finish parameters
-}
