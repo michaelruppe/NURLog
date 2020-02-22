@@ -4,14 +4,17 @@
 #define KELLY_H
 
 #include <stdint.h>
+#include <FlexCAN.h>          //CAN
+#include <kinetis_flexcan.h>  //Additional CAN library to allow for extended ID's for filtering
 
-// int testFunction(void);
-// int kelly_getRPM(CAN_message_t &message);
-// int kelly_getCurrent(CAN_message_t &message);
-// int kelly_getVoltage(CAN_message_t &message);
-// uint8_t kelly_getThrottle(CAN_message_t &message);
-// uint8_t kelly_getMotorTemp(CAN_message_t &message);
-// uint8_t kelly_getControllerTemp(CAN_message_t &message);
+#include "Arduino.h"
+
+int kelly_getRPM(CAN_message_t &message);
+int kelly_getCurrent(CAN_message_t &message);
+int kelly_getVoltage(CAN_message_t &message);
+uint8_t kelly_getThrottle(CAN_message_t &message);
+uint8_t kelly_getMotorTemp(CAN_message_t &message);
+uint8_t kelly_getControllerTemp(CAN_message_t &message);
 
 const unsigned long KMC_MSG_ID_1 = 0x0CF11E05;
 const unsigned long KMC_MSG_ID_2 = 0x0CF11F05;
