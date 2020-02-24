@@ -1,4 +1,5 @@
-Add tm1638 library Sketch  > manage libraries > add .ZIP
+# NURLog
+A Teensy 3.6-based datalogger for EV.Two - a FSAE Electric Race Car built by NU Racing and the University of Newcastle (Australia)
 
 
 # Required libraries
