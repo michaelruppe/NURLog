@@ -43,16 +43,26 @@ void setup() {
   msg.buf[5] = 0x00;
   msg.buf[6] = 0x00;
   msg.buf[7] = 0x00;
-  Serial.print("Before : "); hexDump(8, msg.buf);
 
-  // Pack an Int (Teensy3.6: 4bytes) and a float (Teensy3.6: 4bytes) into an
-  // 8-byte CAN message buffer.
-  int testInt = 1234;
-  float testFloat = 3.415;
-  packInt(testInt, msg.buf, 0); // packs byte[0-3]
-  packFloat(testFloat, msg.buf, 4); // packs byte[4-7]
-  Serial.print("After  : "); hexDump(8, msg.buf);
-  Serial.println("Transmitting CAN1");
+
+  // Test all variable types
+  msg.id = 0x100;
+  packByte(0x55, msg.buf, 0);   // packs byte[0]
+  packShort(-256, msg.buf, 1);  // packs byte[1-2]
+  packUShort(256, msg.buf, 3);  // packs byte[3-4]
+  hexDump(8, msg.buf);
+  Can1.write(msg);
+
+  msg.id = 0x101;
+  packInt(-4321, msg.buf, 0); // packs byte[0-3]
+  packUInt(4321, msg.buf, 4); // packs byte[4-7]
+  hexDump(8, msg.buf);
+  Can1.write(msg);
+
+  msg.id = 0x102;
+  packFloat(1.23456789, msg.buf, 0); // packs byte[0-3]
+  packFloat(3.145, msg.buf, 4); // packs byte[0-3]
+  hexDump(8, msg.buf);
   Can1.write(msg);
 
 }
@@ -67,13 +77,22 @@ void loop() {
     Serial.println("CAN0 available");
     Can0.read(inMsg);
     Serial.print("Receive: "); hexDump(8, inMsg.buf);
-    float a = unPackFloat(inMsg.buf, 4);
-    int b = unPackInt(inMsg.buf, 0);
-
-    Serial.print(a); Serial.print(" ");
-    Serial.print(b); Serial.print(" ");
-
-    Serial.println();
+    if (inMsg.id == 0x100){ // [Byte, Short, UShort]
+      uint8_t a = unPackByte(inMsg.buf,0);
+      short b = unPackShort(inMsg.buf,1);
+      unsigned short c = unPackUShort(inMsg.buf,3);
+      Serial.print(a); Serial.print(" "); Serial.print(b); Serial.print(" "); Serial.println(c);
+    }
+    if (inMsg.id == 0x101){ // [int, Uint]
+      int d = unPackInt(inMsg.buf,0);
+      unsigned int e = unPackUInt(inMsg.buf,4);
+      Serial.print(d); Serial.print(" "); Serial.println(e);
+    }
+    if (inMsg.id == 0x102){ // [float, float]
+      float f = unPackFloat(inMsg.buf,0);
+      float g = unPackFloat(inMsg.buf,4);
+      Serial.print(f); Serial.print(" "); Serial.println(g);
+    }
   }
 
   delay(100);

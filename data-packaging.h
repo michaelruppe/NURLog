@@ -20,17 +20,21 @@ word are 4 byte(s)
 
 
 
+void packByte(uint8_t var, uint8_t buf[], uint8_t ofs);
+void packShort(short var, uint8_t buf[], uint8_t ofs);
+void packUShort(unsigned short var, uint8_t buf[], uint8_t ofs);
+void packInt(int var, uint8_t buf[], uint8_t ofs);
+void packUInt(unsigned int var, uint8_t buf[], uint8_t ofs);
+void packFloat(float var, uint8_t buf[], uint8_t ofs);
+void packDouble(double var, uint8_t buf[], uint8_t ofs);
 
 
-// Pack the binary data for a float variable into a buffer for a bitstream
-void packFloat(float var, uint8_t buf[sizeof(float)], uint8_t index);
-float unPackFloat(uint8_t buf[sizeof(float)], uint8_t index);
-void packInt(int var, uint8_t buf[sizeof(int)], uint8_t index);
-int unPackInt(uint8_t buf[sizeof(int)], uint8_t index);
-void packUint(int var, uint8_t buf[sizeof(unsigned int)], uint8_t index);
-unsigned int unPackUint(uint8_t buf[sizeof(unsigned int)], uint8_t index);
-void packByte(int var, uint8_t buf[sizeof(char)], uint8_t index);
-unsigned int unPackByte(uint8_t buf[sizeof(uint8_t)], uint8_t index);
-
+uint8_t unPackByte(uint8_t buf[], uint8_t ofs);
+short unPackShort(uint8_t buf[], uint8_t ofs);
+unsigned short unPackUShort(uint8_t buf[], uint8_t ofs);
+int unPackInt(uint8_t buf[], uint8_t ofs);
+unsigned int unPackUInt(uint8_t buf[], uint8_t ofs);
+float unPackFloat(uint8_t buf[], uint8_t ofs);
+double unPackDouble(uint8_t buf[], uint8_t ofs);
 
 #endif
