@@ -52,10 +52,10 @@ void setup() {
   msg.ext = 0;
   msg.id = 0x100;
   msg.len = 8;
-  msg.buf[0] = 0x9d;
-  msg.buf[1] = 0x06;
-  msg.buf[2] = 0x9e;
-  msg.buf[3] = 0x3f;
+  msg.buf[0] = 0;
+  msg.buf[1] = 0;
+  msg.buf[2] = 0;
+  msg.buf[3] = 0;
   msg.buf[4] = 0x00;
   msg.buf[5] = 0x00;
   msg.buf[6] = 0x00;
@@ -66,9 +66,16 @@ void setup() {
 
 
   // TEST converting float to byte-buffer for transmission.
-    // float x = 1.23457678;
+    float x = 1.23457678;
+    Serial.print("Transmit: "); Serial.println(x);
     // float a = 3.145;
-    // packFloat(x, msg.buf, 4);
+    packFloat(x, msg.buf, 4);
+    x = 3.145;
+    packFloat(x, msg.buf, 0);
+    Can1.write(msg);
+
+    hexDump(8, msg.buf);
+
     // packFloat(a, msg.buf, 0);
     // hexDump(8, msg.buf);
     // float y = unPackFloat(msg.buf, 4);
@@ -91,9 +98,11 @@ void loop() {
     Can0.read(inMsg);
     Serial.print("CAN bus 0: "); hexDump(8, inMsg.buf);
   }
-
-  msg.buf[0]++;
-  Can1.write(msg);
+  float y = unPackFloat(msg.buf, 4);
+  float z = unPackFloat(msg.buf, 0);
+  Serial.print("Receive: "); Serial.print(y); Serial.print(" "); Serial.println(z);
+  // msg.buf[0]++;
+  // Can1.write(msg);
   // msg.buf[0]++;
   // Can1.write(msg);
   // msg.buf[0]++;
