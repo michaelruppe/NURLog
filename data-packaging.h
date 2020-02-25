@@ -1,3 +1,5 @@
+// ToDo: Look into compressing functionality using function templates
+
 #ifndef DATA_PACKAGING_H
 #define DATA_PACKAGING_H
 
