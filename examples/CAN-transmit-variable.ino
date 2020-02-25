@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Transmit two variables in an 8-byte CAN frame.
+// Transmit variables over CAN
 // Pack the raw variable data into a CAN message, transmit it, then unpack it
 // on the receiving end. This requires CAN0 & CAN1 to be looped together.
 //
