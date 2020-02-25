@@ -1,7 +1,7 @@
 #include <SD.h>
-#include <TimeLib.h>          //RTC
+// #include <TimeLib.h>          //RTC
 #include <FlexCAN.h>          //CAN
-#include <kinetis_flexcan.h>  //Additional CAN library to allow for extended ID's for filtering
+// #include <kinetis_flexcan.h>  //Additional CAN library to allow for extended ID's for filtering
 
 
 #include "logger.h"
@@ -9,14 +9,14 @@
 #include "motor.h"
 #include "data-packaging.h"
 
-const int CAN_BAUD = 50000;
+#define CAN_BAUD 50000
 static uint8_t hex[17] = "0123456789abcdef";
 
 File logFile;
 
 char buff[50];
 
-CAN_message_t inMsgR, inMsgL, msg, inMsg;
+static CAN_message_t inMsgR, inMsgL, msg;
 Motor motorL, motorR;
 
 void setup() {
@@ -30,13 +30,13 @@ void setup() {
     Serial.println(F("SD Card initialization failed!"));
   } else {
     Serial.println(F("SD Card initialization ."));
+    createLogFile(logFile);
   }
 
-  createLogFile(logFile);
 
   // CAN
-  Can0.begin(CAN_BAUD);
-  Can1.begin(CAN_BAUD);
+  Can0.begin();
+  Can1.begin();
   //Create a CAN filter: allow certain IDs
   // CAN_filter_t allPassFilter;
   // allPassFilter.id=0;   //ID = 0 defaults to allow everything in. Set to a value to allow only that ID through
@@ -60,24 +60,22 @@ void setup() {
   msg.buf[5] = 0x00;
   msg.buf[6] = 0x00;
   msg.buf[7] = 0x00;
-  hexDump(8, msg.buf);
+  // hexDump(8, msg.buf);
   Serial.println("Start:");
-  Can1.write(msg);
+  // Can1.write(msg);
 
 
   // TEST converting float to byte-buffer for transmission.
-    float x = 1.23457678;
-    packFloat(x, msg.buf, 4);
-    hexDump(8, msg.buf);
-    float y = unPackFloat(msg.buf, 4);
-    // memcpy(&y, &buffer, sizeof(y));
+    // float x = 1.23457678;
+    // float a = 3.145;
+    // packFloat(x, msg.buf, 4);
+    // packFloat(a, msg.buf, 0);
+    // hexDump(8, msg.buf);
+    // float y = unPackFloat(msg.buf, 4);
+    // float z = unPackFloat(msg.buf, 0);
 
-    Serial.println(y,10);
-
-
-
-
-
+    // Serial.println(y,10);
+    // Serial.println(z,10);
 
 
 }
@@ -85,23 +83,26 @@ void setup() {
 
 
 void loop() {
-  // CAN_message_t inMsg;
+
+  CAN_message_t inMsg;
   while (Can0.available())
   {
+    Serial.println("available");
     Can0.read(inMsg);
     Serial.print("CAN bus 0: "); hexDump(8, inMsg.buf);
   }
+
   msg.buf[0]++;
   Can1.write(msg);
-  msg.buf[0]++;
-  Can1.write(msg);
-  msg.buf[0]++;
-  Can1.write(msg);
-  msg.buf[0]++;
-  Can1.write(msg);
-  msg.buf[0]++;
-  Can1.write(msg);
-  delay(20);
+  // msg.buf[0]++;
+  // Can1.write(msg);
+  // msg.buf[0]++;
+  // Can1.write(msg);
+  // msg.buf[0]++;
+  // Can1.write(msg);
+  // msg.buf[0]++;
+  // Can1.write(msg);
+  delay(1000);
 
 }
 
@@ -118,13 +119,13 @@ static void hexDump(uint8_t dumpLen, uint8_t *bytePtr)
 }
 
 
-void RTC_INIT(void)
-{
-  //Initialise RTC
-  setSyncProvider(getTeensy3Time);
-}
-
-time_t getTeensy3Time()
-{
-  return Teensy3Clock.get();
-}
+// void RTC_INIT(void)
+// {
+//   //Initialise RTC
+//   setSyncProvider(getTeensy3Time);
+// }
+//
+// time_t getTeensy3Time()
+// {
+//   return Teensy3Clock.get();
+// }
