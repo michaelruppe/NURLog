@@ -19,7 +19,7 @@
 #include "logger.h"
 #include "kelly.h"
 #include "motor.h"
-#include "data-packaging.h"
+#include "src/data-packaging/data-packaging.h"
 
 static const int CAN_BAUD = 50000;
 static const uint8_t hex[17] = "0123456789abcdef";
